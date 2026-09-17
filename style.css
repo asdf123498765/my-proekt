@@ -123,12 +123,7 @@ background: linear-gradient(90deg, rgba(5, 0, 0, 1) 0%, rgba(61, 12, 12, 1) 50%,
     opacity: 0.7;
 }
 
-/* АДАПТИВ */
-@media (max-width: 700px) {
-    .nav-btn { width: 40px; height: 40px; }
-    .content-section { padding: 1.8rem 1.5rem; }
-    .content-section h2 { font-size: 1.7rem; }
-}
+
 .section-text{
     color: rgba(255, 255, 255, 1);
     font-size: 0.9rem;
