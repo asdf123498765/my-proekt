@@ -81,9 +81,9 @@ background: linear-gradient(90deg, rgba(5, 0, 0, 1) 0%, rgba(61, 12, 12, 1) 50%,
 }
 
 /* ТЕМЫ */
-.theme-1 { background: #fefaf2; color: #2c3e50; border-left: 12px solid #b8a28b; background: url(img/1.png) no-repeat; width: 1400px; height: 768px; }
-.theme-2 { background: #eef7fb; color: #1e3b4f; border-left: 12px solid #4d7c9c; background: url(img/4.png) no-repeat; width: 1400px; height: 768px; }
-.theme-3 { background: #f3f0e9; color: #3e2e1f; border-left: 12px solid #a58e74; background: url(img/2.png) no-repeat; width: 1400px; height: 768px; }
+.theme-1 { background: #fefaf2; color: #2c3e50; border-left: 12px solid #b8a28b; background: url(img/1.png) no-repeat;  width:  72.9vw; height: 71.1vh; max-width: 1400px; }
+.theme-2 { background: #eef7fb; color: #1e3b4f; border-left: 12px solid #4d7c9c; background: url(img/4.png) no-repeat;  width:  72.9vw; height: 71.1vh; max-width: 1400px; }
+.theme-3 { background: #f3f0e9; color: #3e2e1f; border-left: 12px solid #a58e74; background: url(img/2.png) no-repeat;  width:  72.9vw; height: 71.1vh; max-width: 1400px; }
 .theme-4 { background: #e6f0ea; color: #1f3b2c; border-left: 12px solid #4b7a5e; background: url(img/3.png) no-repeat; width: 1400px; height: 768px; }
 .theme-5 { background: #f6e9f0; color: #412b38; border-left: 12px solid #a06b8b; background: url(img/5.png) no-repeat; width: 1400px; height: 768px; }
 .theme-6 { background: #fff3e0; color: #4a2e1b; border-left: 12px solid #b87c4b; background: url(img/6.png) no-repeat; width: 1400px; height: 768px; }
