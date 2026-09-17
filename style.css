@@ -147,14 +147,14 @@ background: linear-gradient(90deg, rgba(5, 0, 0, 1) 0%, rgba(61, 12, 12, 1) 50%,
     }
 }
 
-@media only screen and (max-width: 1600px) {
+@media only screen and (max-width: 480px) {
   .content-section{
     font-size: 13px;
     width: 90%;
     margin: 0 auto;
   }
   .header{
-  max-width: 1200px;
+  max-width: 1000px;
   }
  .nav-btn{
     height: 20px;
