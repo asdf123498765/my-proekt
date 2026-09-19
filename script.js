@@ -75,3 +75,23 @@
     }
   });
 })();
+(function() {
+  const overlay = document.getElementById('welcomeOverlay');
+  const closeBtn = document.getElementById('welcomeClose');
+
+  if (!overlay || !closeBtn) return;
+
+  // Пока окно открыто — блокируем скролл body
+document.documentElement.classList.add('no-scroll');
+document.body.classList.add('no-scroll');
+
+  function closeWelcome() {
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    document.body.classList.remove('no-scroll');   // ← вернуть скролл
+    sessionStorage.setItem('welcomeClosed', '1');
+    setTimeout(() => overlay.remove(), 300);
+  }
+
+  // ... остальные обработчики
+})();
