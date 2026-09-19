@@ -1,3 +1,6 @@
+/* ============================================
+   БАЗА
+   ============================================ */
 * {
   margin: 0;
   padding: 0;
@@ -5,28 +8,31 @@
 }
 
 html, body {
-  height: 100%;
-  overflow: auto;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   font-family: Georgia, serif;
   background: #050000;
   background: linear-gradient(90deg, #050000 0%, #3d0c0c 50%, #003a4a 100%);
+  padding: 8px;
 }
 
-/* HEADER */
+/* ============================================
+   HEADER
+   ============================================ */
 .header {
   padding: clamp(8px, 1.5vw, 20px);
   position: sticky;
-  top: 1;
+  top: 0;
   z-index: 100;
   border-radius: 30px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  margin: 8px;
+  margin-bottom: 12px;
 }
 
 .button-grid {
@@ -48,83 +54,133 @@ body {
   transition: all 0.2s ease;
 }
 
+.nav-btn:hover {
+  background: #3e556b;
+  transform: scale(1.08);
+}
+
 .nav-btn.active {
   background: #c9a96e;
   border-color: #e5d4b0;
   box-shadow: 0 0 0 3px rgba(201,169,110,0.45);
 }
 
-/* КОНТЕНТ */
+/* ============================================
+   КОНТЕНТ — обёртка
+   ============================================ */
 .content-wrap {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: calc(100dvh - 100px);   /* остаток экрана под шапкой */
-  overflow: hidden;
-  padding: clamp(8px, 1.5vw, 20px);
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0 24px;
 }
 
+/* ============================================
+   СЕКЦИЯ — картинка сверху, текст снизу
+   ============================================ */
 .content-section {
   position: relative;
   width: 72.9vw;
   max-width: 1400px;
-  height: 100%;                   /* вся доступная высота */
+  min-height: 71.1vh;
+  height: auto;
   border-radius: 32px;
-  box-shadow: 0 20px 35px -8px rgba(0,0,0,1);
+  box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
   overflow: hidden;
   padding: 0;
+  background-color: #0d0d12;    /* заливка, если картинка не покрывает */
   animation: fadeIn 0.4s ease both;
-  scale: 0.9;
 }
 
-/* Фон — на псевдоэлементе */
+/* ─── КАРТИНКА СВЕРХУ ─── */
+/* Участвует в потоке → задаёт высоту блоку */
 .content-section::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1400 / 800;      /* пропорции картинки */
   background-image: var(--bg);
-  background-size: cover;
+  background-size: contain;      /* вся картинка видна */
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 0;
+  background-color: #0d0d12;     /* заливка полей по бокам */
 }
 
-/* Затемнение под текст */
+/* ─── ЗАТЕМНЕНИЕ ПОВЕРХ КАРТИНКИ ─── */
 .content-section::after {
   content: '';
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  aspect-ratio: 1400 / 800;      /* та же пропорция, что и картинка */
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.15) 0%,
-    rgba(0, 0, 0, 0.45) 100%
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.35) 100%
   );
-  z-index: 1;
   pointer-events: none;
+  z-index: 1;
 }
 
+/* ─── ТЕКСТ ПОД КАРТИНКОЙ ─── */
 .section-text {
   position: relative;
   z-index: 2;
-  height: 100%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   padding: clamp(20px, 4vw, 60px);
   padding-bottom: clamp(60px, 8vw, 100px);
   color: #fff;
   font-size: clamp(0.95rem, 1.6vw, 1.15rem);
   line-height: 1.7;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.85);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
   overflow-wrap: break-word;
   hyphens: auto;
 }
 
 .blacs {
   color: #000;
-  text-shadow: 0 1px 2px rgba(255,255,255,0.6);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
-/* ТЕМЫ — только фоны через переменные */
+/* ============================================
+   ПРОПОРЦИИ ДЛЯ КАЖДОЙ ТЕМЫ
+   ============================================ */
+/* Стандарт 1400×800 */
+.theme-1::before,  .theme-1::after,
+.theme-2::before,  .theme-2::after,
+.theme-3::before,  .theme-3::after,
+.theme-4::before,  .theme-4::after,
+.theme-5::before,  .theme-5::after,
+.theme-6::before,  .theme-6::after,
+.theme-7::before,  .theme-7::after,
+.theme-8::before,  .theme-8::after,
+.theme-9::before,  .theme-9::after,
+.theme-11::before, .theme-11::after,
+.theme-12::before, .theme-12::after,
+.theme-13::before, .theme-13::after,
+.theme-14::before, .theme-14::after,
+.theme-15::before, .theme-15::after,
+.theme-16::before, .theme-16::after,
+.theme-17::before, .theme-17::after,
+.theme-18::before, .theme-18::after {
+  aspect-ratio: 1400 / 800;
+}
+
+/* theme-10 — 1400×1370 */
+.theme-10::before,
+.theme-10::after {
+  aspect-ratio: 1400 / 1370;
+}
+
+/* theme-19 — без картинки */
+.theme-19::before,
+.theme-19::after {
+  display: none;
+}
+
+/* ============================================
+   ФОНЫ ТЕМ
+   ============================================ */
 .theme-1  { --bg: url(img/1.png);  }
 .theme-2  { --bg: url(img/4.png);  }
 .theme-3  { --bg: url(img/2.png);  }
@@ -145,12 +201,13 @@ body {
 .theme-18 { --bg: url(img/18.png); }
 .theme-19 { --bg: none; }
 
-/* Скрытие */
+/* ============================================
+   СКРЫТИЕ И АНИМАЦИЯ
+   ============================================ */
 .hidden {
   display: none;
 }
 
-/* Анимация */
 .fade-in {
   animation: fadeIn 0.4s ease both;
 }
@@ -160,39 +217,73 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* МОБИЛЬНЫЕ */
+/* ============================================
+   МОБИЛЬНЫЕ
+   ============================================ */
 @media (max-width: 768px) {
-  .content-section {
-    width: 92vw;
-    border-radius: 20px;
+  body {
+    padding: 4px;
   }
-  
-  .section-text {
-    padding: 20px 16px 60px;
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-  
+
   .header {
     padding: 6px;
     border-radius: 20px;
+    margin-bottom: 8px;
+  }
+
+  .nav-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
+
+  .content-section {
+    width: 96vw;
+    max-width: 96vw;
+    border-radius: 16px;
+    min-height: auto;         /* блок растёт под текст */
+  }
+
+  .section-text {
+    padding: 20px 16px 60px;
+    font-size: 1rem;
+    line-height: 1.6;
   }
 }
 
-/* ЛАНДШАФТ НА ТЕЛЕФОНЕ */
+/* ============================================
+   ЛАНДШАФТ НА ТЕЛЕФОНЕ
+   ============================================ */
 @media (orientation: landscape) and (max-height: 500px) {
-  .content-wrap {
-    height: calc(100dvh - 70px);
-  }
-  
   .content-section {
-    width: 95vw;
+    width: 96vw;
+    max-width: 96vw;
+    min-height: auto;
   }
-  
+
   .section-text {
     font-size: 0.9rem;
     padding: 16px 24px 40px;
   }
+
+  /* В ландшафте картинка может быть меньше */
+  .theme-1::before,  .theme-1::after,
+  .theme-2::before,  .theme-2::after,
+  .theme-3::before,  .theme-3::after,
+  .theme-4::before,  .theme-4::after,
+  .theme-5::before,  .theme-5::after,
+  .theme-6::before,  .theme-6::after,
+  .theme-7::before,  .theme-7::after,
+  .theme-8::before,  .theme-8::after,
+  .theme-9::before,  .theme-9::after,
+  .theme-11::before, .theme-11::after,
+  .theme-12::before, .theme-12::after,
+  .theme-13::before, .theme-13::after,
+  .theme-14::before, .theme-14::after,
+  .theme-15::before, .theme-15::after,
+  .theme-16::before, .theme-16::after,
+  .theme-17::before, .theme-17::after,
+  .theme-18::before, .theme-18::after {
+    aspect-ratio: 1400 / 800;
+  }
 }
-
-
