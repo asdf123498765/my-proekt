@@ -1,163 +1,196 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-    
-    background: #f5f3f0;
-    max-width: 1600px;
-    margin: 0 auto;
-    background: #050000;
-background: linear-gradient(90deg, rgba(5, 0, 0, 1) 0%, rgba(61, 12, 12, 1) 50%, rgba(0, 212, 255, 1) 100%);
+  font-family: Georgia, serif;
+  background: #050000;
+  background: linear-gradient(90deg, #050000 0%, #3d0c0c 50%, #003a4a 100%);
 }
 
 /* HEADER */
 .header {
-    background: #1e2b3c;
-    padding: 1.2rem 2rem;
-    position: sticky;
-    
-    z-index: 100;
-    border-radius: 30px;
-    background: rgba(255, 255, 255, 0.2); /* Полупрозрачный фон */
-  backdrop-filter: blur(10px); /* Размытие фона */
-  -webkit-backdrop-filter: blur(10px); /* Для Safari */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Тонкая граница */
+  padding: clamp(8px, 1.5vw, 20px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  margin: 8px;
 }
 
 .button-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(6px, 1vw, 14px);
 }
 
 .nav-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #2c3e50;
-    border: 2px solid #4a5f78;
-    cursor: pointer;
-    padding: 0;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-}
-
-.nav-btn:hover {
-    background: #3e556b;
-    transform: scale(1.08);
+  width: clamp(36px, 5vw, 48px);
+  height: clamp(36px, 5vw, 48px);
+  border-radius: 50%;
+  background: #2c3e50;
+  border: 2px solid #4a5f78;
+  color: #fff;
+  cursor: pointer;
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  transition: all 0.2s ease;
 }
 
 .nav-btn.active {
-    background: #c9a96e;
-    border-color: #e5d4b0;
-    box-shadow: 0 0 0 3px rgba(201,169,110,0.45);
+  background: #c9a96e;
+  border-color: #e5d4b0;
+  box-shadow: 0 0 0 3px rgba(201,169,110,0.45);
 }
 
-/* СЕКЦИИ */
+/* КОНТЕНТ */
 .content-wrap {
-    margin: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 100%;
-    margin: 0 auto;
-    margin: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: calc(100dvh - 100px);   /* остаток экрана под шапкой */
+  overflow: hidden;
+  padding: clamp(8px, 1.5vw, 20px);
 }
 
 .content-section {
-    padding: 20px;
-    border-radius: 32px;
-    box-shadow: 0 20px 35px -8px rgba(0,0,0,1);
-    line-height: 1.6;
-    transition: background 0.3s, color 0.3s;
-    animation: 0.5s fadeIn ease-in-out;
+  position: relative;
+  width: 72.9vw;
+  max-width: 1400px;
+  height: 100%;                   /* вся доступная высота */
+  border-radius: 32px;
+  box-shadow: 0 20px 35px -8px rgba(0,0,0,1);
+  overflow: hidden;
+  padding: 0;
+  animation: fadeIn 0.4s ease both;
+  scale: 0.9;
 }
 
-/* ГЛАВНОЕ — СКРЫТИЕ */
+/* Фон — на псевдоэлементе */
+.content-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* Затемнение под текст */
+.content-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.section-text {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: clamp(20px, 4vw, 60px);
+  padding-bottom: clamp(60px, 8vw, 100px);
+  color: #fff;
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  line-height: 1.7;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.85);
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.blacs {
+  color: #000;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.6);
+}
+
+/* ТЕМЫ — только фоны через переменные */
+.theme-1  { --bg: url(img/1.png);  }
+.theme-2  { --bg: url(img/4.png);  }
+.theme-3  { --bg: url(img/2.png);  }
+.theme-4  { --bg: url(img/3.png);  }
+.theme-5  { --bg: url(img/5.png);  }
+.theme-6  { --bg: url(img/6.png);  }
+.theme-7  { --bg: url(img/7.png);  }
+.theme-8  { --bg: url(img/10.png); }
+.theme-9  { --bg: url(img/8.png);  }
+.theme-10 { --bg: url(img/9.png);  }
+.theme-11 { --bg: url(img/11.png); }
+.theme-12 { --bg: url(img/13.png); }
+.theme-13 { --bg: url(img/12.png); }
+.theme-14 { --bg: url(img/14.png); }
+.theme-15 { --bg: url(img/15.png); }
+.theme-16 { --bg: url(img/16.png); }
+.theme-17 { --bg: url(img/17.png); }
+.theme-18 { --bg: url(img/18.png); }
+.theme-19 { --bg: none; }
+
+/* Скрытие */
 .hidden {
-    display: none;
+  display: none;
 }
 
-/* ТЕМЫ */
-.theme-1 { background: #fefaf2; color: #2c3e50; border-left: 12px solid #b8a28b; background: url(img/1.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover;  }
-.theme-2 { background: #eef7fb; color: #1e3b4f; border-left: 12px solid #4d7c9c; background: url(img/4.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover; }
-.theme-3 { background: #f3f0e9; color: #3e2e1f; border-left: 12px solid #a58e74; background: url(img/2.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover; }
-.theme-4 { background: #e6f0ea; color: #1f3b2c; border-left: 12px solid #4b7a5e; background: url(img/3.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover; }
-.theme-5 { background: #f6e9f0; color: #412b38; border-left: 12px solid #a06b8b; background: url(img/5.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover; }
-.theme-6 { background: #fff3e0; color: #4a2e1b; border-left: 12px solid #b87c4b; background: url(img/6.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover;}
-.theme-7 { background: #e8eaf6; color: #202a44; border-left: 12px solid #5c6bc0; background: url(img/7.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover;}
-.theme-8 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/10.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover;}
-.theme-9 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/8.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover;}
-.theme-10 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/9.png) no-repeat; width: 72.9vw; height: 126.85vh; background-position: bottom; background-size: contain; background-color: aliceblue; }
-.theme-11 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/11.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover;}
-.theme-12 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/13.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover;}
-.theme-13 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/12.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover;}
-.theme-14 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/14.png) no-repeat; width: 72.9vw; height: 80vh; background-position: top; background-size: contain; background-color: aliceblue; }
-.theme-15 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/15.png) no-repeat; width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover; }
-.theme-16 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/16.png) no-repeat;  width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover; }
-.theme-17 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/17.png) no-repeat;  width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover; }
-.theme-18 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/18.png) no-repeat;  width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover; }
-.theme-19 { background: #f1f8e9; color: #2e3d1f; border-left: 12px solid #7b9e5c; background: url(img/.png) no-repeat;  width:  72.9vw; height: 71.1vh; max-width: 1400px; background-size: cover;}
-
-
-.content-section h2 {
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-    font-weight: 400;
-    padding-bottom: 0.5rem;
-}
-
-.content-section p {
-    font-size: 1.15rem;
-    margin-bottom: 1.2rem;
-}
-
-.content-section small {
-    display: block;
-    margin-top: 1.8rem;
-    font-style: italic;
-    opacity: 0.7;
-}
-
-
-.section-text{
-    color: rgba(255, 255, 255, 1);
-    font-size: 0.9rem;
-}
-.blacs{
-    color: black;
-}
-
+/* Анимация */
 .fade-in {
-    animation: fadeIn 0.4s ease both;
+  animation: fadeIn 0.4s ease both;
 }
 
 @keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(15px);   /* лёгкий сдвиг снизу вверх */
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@media only screen and (max-width: 480px) {
-  .content-section{
-    font-size: 13px;
-    width: 90%;
-    margin: 0 auto;
+/* МОБИЛЬНЫЕ */
+@media (max-width: 768px) {
+  .content-section {
+    width: 92vw;
+    border-radius: 20px;
   }
-  .header{
-  max-width: 1000px;
+  
+  .section-text {
+    padding: 20px 16px 60px;
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
- .nav-btn{
-    height: 20px;
-    width: 20px;
- }
+  
+  .header {
+    padding: 6px;
+    border-radius: 20px;
+  }
+}
+
+/* ЛАНДШАФТ НА ТЕЛЕФОНЕ */
+@media (orientation: landscape) and (max-height: 500px) {
+  .content-wrap {
+    height: calc(100dvh - 70px);
+  }
+  
+  .content-section {
+    width: 95vw;
+  }
+  
+  .section-text {
+    font-size: 0.9rem;
+    padding: 16px 24px 40px;
+  }
 }
