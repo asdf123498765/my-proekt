@@ -19,9 +19,9 @@ body {
   padding: 8px;
 }
 
-/* ============================================
+/* ============================================================
    HEADER
-   ============================================ */
+   ============================================================ */
 .header {
   padding: clamp(8px, 1.5vw, 20px);
   position: sticky;
@@ -33,16 +33,58 @@ body {
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.25);
   margin-bottom: 12px;
-}
-
-.button-grid {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: clamp(6px, 1vw, 14px);
+  align-items: center;
 }
 
+/* ============================================================
+   КАРУСЕЛЬ — все кнопки в DOM, активная в центре
+   ============================================================ */
+.button-carousel {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: start;
+
+    width: calc(5 * clamp(36px, 5vw, 48px) + 5 * clamp(6px, 1.5vw, 12px));
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  
+  padding: 5px;
+  background-color: black;
+}
+.button-mask{
+mask-image: linear-gradient(
+    to left,
+    transparent 0,
+    black 40%,
+    black 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to left,
+    transparent 0,
+    black 40%,
+    black 100%
+  );
+   overflow: hidden;
+  width: 100%;
+}
+.button-track {
+  display: flex;
+  gap: clamp(6px, 1.5vw, 12px);
+  padding: 0 calc(50% - 24px);
+  transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) ; 
+  will-change: transform;
+}
+
+/* ============================================================
+   КНОПКИ
+   ============================================================ */
 .nav-btn {
+  flex: 0 0 auto;
   width: clamp(36px, 5vw, 48px);
   height: clamp(36px, 5vw, 48px);
   border-radius: 50%;
@@ -51,23 +93,41 @@ body {
   color: #fff;
   cursor: pointer;
   font-size: clamp(0.8rem, 1.2vw, 1rem);
-  transition: all 0.2s ease;
+  font-family: inherit;
+  padding: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  scale: 0.8;
+
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: 0.25s;
 }
 
 .nav-btn:hover {
   background: #3e556b;
-  transform: scale(1.08);
+  scale: 1;
 }
 
 .nav-btn.active {
   background: #c9a96e;
   border-color: #e5d4b0;
-  box-shadow: 0 0 0 3px rgba(201,169,110,0.45);
+  scale: 1;
 }
 
-/* ============================================
-   КОНТЕНТ — обёртка
-   ============================================ */
+.nav-btn.edge {
+  opacity: 0.55;
+}
+
+.nav-btn.edge:hover {
+  opacity: 1;
+}
+
+/* ============================================================
+   КОНТЕНТ
+   ============================================================ */
 .content-wrap {
   display: flex;
   flex-direction: column;
@@ -75,9 +135,9 @@ body {
   padding: 0 0 24px;
 }
 
-/* ============================================
+/* ============================================================
    СЕКЦИЯ — картинка сверху, текст снизу
-   ============================================ */
+   ============================================================ */
 .content-section {
   position: relative;
   width: 72.9vw;
@@ -88,32 +148,32 @@ body {
   box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
   overflow: hidden;
   padding: 0;
-  background-color: #0d0d12;    /* заливка, если картинка не покрывает */
+  background-color: #0d0d12;
   animation: fadeIn 0.4s ease both;
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-/* ─── КАРТИНКА СВЕРХУ ─── */
-/* Участвует в потоке → задаёт высоту блоку */
+/* Картинка сверху — участвует в потоке, задаёт высоту */
 .content-section::before {
   content: '';
   display: block;
   width: 100%;
-  aspect-ratio: 1400 / 800;      /* пропорции картинки */
+  aspect-ratio: 1400 / 800;
   background-image: var(--bg);
-  background-size: contain;      /* вся картинка видна */
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #0d0d12;     /* заливка полей по бокам */
+  background-color: #0d0d12;
 }
 
-/* ─── ЗАТЕМНЕНИЕ ПОВЕРХ КАРТИНКИ ─── */
+/* Затемнение поверх картинки */
 .content-section::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  aspect-ratio: 1400 / 800;      /* та же пропорция, что и картинка */
+  aspect-ratio: 1400 / 800;
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0.05) 0%,
@@ -123,7 +183,7 @@ body {
   z-index: 1;
 }
 
-/* ─── ТЕКСТ ПОД КАРТИНКОЙ ─── */
+/* Текст под картинкой */
 .section-text {
   position: relative;
   z-index: 2;
@@ -137,12 +197,9 @@ body {
   hyphens: auto;
 }
 
-
-
-/* ============================================
+/* ============================================================
    ПРОПОРЦИИ ДЛЯ КАЖДОЙ ТЕМЫ
-   ============================================ */
-/* Стандарт 1400×800 */
+   ============================================================ */
 .theme-1::before,  .theme-1::after,
 .theme-2::before,  .theme-2::after,
 .theme-3::before,  .theme-3::after,
@@ -166,7 +223,7 @@ body {
 /* theme-10 — 1400×1370 */
 .theme-10::before,
 .theme-10::after {
-  aspect-ratio: 1400 / 1370;
+  aspect-ratio: 1400 / 800;
 }
 
 /* theme-19 — без картинки */
@@ -175,9 +232,9 @@ body {
   display: none;
 }
 
-/* ============================================
+/* ============================================================
    ФОНЫ ТЕМ
-   ============================================ */
+   ============================================================ */
 .theme-1  { --bg: url(img/1.png);  }
 .theme-2  { --bg: url(img/4.png);  }
 .theme-3  { --bg: url(img/2.png);  }
@@ -198,9 +255,9 @@ body {
 .theme-18 { --bg: url(img/18.png); }
 .theme-19 { --bg: none; }
 
-/* ============================================
+/* ============================================================
    СКРЫТИЕ И АНИМАЦИЯ
-   ============================================ */
+   ============================================================ */
 .hidden {
   display: none;
 }
@@ -214,9 +271,9 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ============================================
+/* ============================================================
    МОБИЛЬНЫЕ
-   ============================================ */
+   ============================================================ */
 @media (max-width: 768px) {
   body {
     padding: 4px;
@@ -228,17 +285,11 @@ body {
     margin-bottom: 8px;
   }
 
-  .nav-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 0.8rem;
-  }
-
   .content-section {
     width: 96vw;
     max-width: 96vw;
     border-radius: 16px;
-    min-height: auto;         /* блок растёт под текст */
+    min-height: auto;
   }
 
   .section-text {
@@ -248,9 +299,9 @@ body {
   }
 }
 
-/* ============================================
+/* ============================================================
    ЛАНДШАФТ НА ТЕЛЕФОНЕ
-   ============================================ */
+   ============================================================ */
 @media (orientation: landscape) and (max-height: 500px) {
   .content-section {
     width: 96vw;
@@ -262,29 +313,11 @@ body {
     font-size: 0.9rem;
     padding: 16px 24px 40px;
   }
-
-  /* В ландшафте картинка может быть меньше */
-  .theme-1::before,  .theme-1::after,
-  .theme-2::before,  .theme-2::after,
-  .theme-3::before,  .theme-3::after,
-  .theme-4::before,  .theme-4::after,
-  .theme-5::before,  .theme-5::after,
-  .theme-6::before,  .theme-6::after,
-  .theme-7::before,  .theme-7::after,
-  .theme-8::before,  .theme-8::after,
-  .theme-9::before,  .theme-9::after,
-  .theme-11::before, .theme-11::after,
-  .theme-12::before, .theme-12::after,
-  .theme-13::before, .theme-13::after,
-  .theme-14::before, .theme-14::after,
-  .theme-15::before, .theme-15::after,
-  .theme-16::before, .theme-16::after,
-  .theme-17::before, .theme-17::after,
-  .theme-18::before, .theme-18::after {
-    aspect-ratio: 1400 / 800;
-  }
 }
 
+/* ============================================================
+   WELCOME-МОДАЛКА
+   ============================================================ */
 .welcome-overlay {
   position: fixed;
   inset: 0;
@@ -300,7 +333,6 @@ body {
   transition: opacity 0.3s ease;
 }
 
-/* Скрытое состояние */
 .welcome-overlay.hidden-overlay {
   opacity: 0;
   pointer-events: none;
@@ -328,7 +360,6 @@ body {
   animation: welcomeIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
 }
 
-/* Круглая кнопка закрытия */
 .welcome-close {
   position: absolute;
   top: 12px;
@@ -376,19 +407,11 @@ body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-/* Анимация появления */
 @keyframes welcomeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Мобильные */
 @media (max-width: 768px) {
   .welcome-modal {
     max-width: 92vw;
@@ -404,8 +427,10 @@ body {
     right: 10px;
   }
 }
+
 html.no-scroll,
 body.no-scroll {
   overflow: hidden;
   height: 100%;
 }
+
