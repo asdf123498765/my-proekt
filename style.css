@@ -194,3 +194,71 @@ body {
     padding: 16px 24px 40px;
   }
 }
+
+@media (max-width: 768px) {
+
+  /* 1. Контейнер без лишних отступов */
+  .content-wrap {
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+
+  /* 2. Все секции — почти вся ширина, фон contain */
+  .content-section {
+    width: 96vw !important;
+    max-width: 96vw !important;
+    margin: 8px auto !important;
+    padding: 0 !important;              /* убираем внутренние отступы */
+    border-radius: 16px;
+    border-left: none !important;        /* убираем цветную полосу */
+    
+    /* Фон — вся картинка видна */
+    background-size: contain !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+    background-color: #0d0d12 !important; /* тёмная заливка полей */
+    
+    /* Блок растёт под текст */
+    height: auto !important;
+    min-height: auto !important;
+    
+    /* Отступ сверху под картинку + снизу для текста */
+    overflow: hidden;
+  }
+
+  /* 3. Текст — отдельным блоком ПОД картинкой */
+  .section-text {
+    /* ⚠️ padding-top = высота картинки на мобильном */
+    /* 96vw × (высота/ширина картинки) — но проще задать в vh */
+    padding: 52vw 16px 24px 16px;
+    /* 52vw ≈ картинка занимает 52% ширины экрана по высоте */
+    /* если у вас картинки 1400×800 → 800/1400 = 57% → 57vw */
+    /* если 1400×1370 → 1370/1400 = 98% → 98vw */
+    
+    font-size: 1rem;
+    line-height: 1.55;
+    color: #fff;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* 4. Кнопки и шапка — компактнее */
+  .nav-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .button-grid {
+    gap: 0.4rem;
+  }
+
+  .header {
+    padding: 0.7rem 0.8rem;
+    border-radius: 16px;
+  }
+
+  body {
+    padding: 0 4px;
+  }
+}
