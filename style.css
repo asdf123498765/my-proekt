@@ -284,3 +284,123 @@ body {
     aspect-ratio: 1400 / 800;
   }
 }
+
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Скрытое состояние */
+.welcome-overlay.hidden-overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.welcome-modal {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: clamp(24px, 5vw, 48px);
+  padding-top: clamp(32px, 6vw, 56px);
+  border-radius: 24px;
+  background: linear-gradient(
+    145deg,
+    rgba(30, 20, 20, 0.95),
+    rgba(10, 15, 25, 0.95)
+  );
+  border: 1px solid rgba(201, 169, 110, 0.45);
+  box-shadow:
+    0 30px 60px -15px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  color: #f5f3f0;
+  animation: welcomeIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+/* Круглая кнопка закрытия */
+.welcome-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 169, 110, 0.5);
+  background: rgba(201, 169, 110, 0.15);
+  color: #e5d4b0;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.welcome-close:hover {
+  background: #c9a96e;
+  color: #1a1a1a;
+  transform: rotate(90deg) scale(1.1);
+  border-color: #e5d4b0;
+}
+
+.welcome-close:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+.welcome-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 400;
+  color: #e5d4b0;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.5px;
+}
+
+.welcome-text {
+  font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+  line-height: 1.7;
+  color: #d8d4ce;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Анимация появления */
+@keyframes welcomeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Мобильные */
+@media (max-width: 768px) {
+  .welcome-modal {
+    max-width: 92vw;
+    padding: 28px 20px 24px;
+    border-radius: 18px;
+  }
+
+  .welcome-close {
+    width: 36px;
+    height: 36px;
+    font-size: 1.4rem;
+    top: 10px;
+    right: 10px;
+  }
+}
