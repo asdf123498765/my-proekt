@@ -1,7 +1,3 @@
-
-/* ============================================
-   МОДАЛЬНОЕ ОКНО ПРИ ВХОДЕ
-   ============================================ */
 (function() {
   const overlay = document.getElementById('welcomeOverlay');
   const closeBtn = document.getElementById('welcomeClose');
@@ -110,6 +106,8 @@
 
     showSection(num, direction);
     centerActiveButton();
+
+    window.scrollTo(0, 0);
   }
 
   buttons.forEach((btn, i) => {
@@ -135,3 +133,7 @@
 
   window.addEventListener('load', centerActiveButton);
 })();
+window.scrollTo({
+  top: 0,
+  behavior: 'smooth'
+});
