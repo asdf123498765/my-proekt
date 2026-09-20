@@ -1,6 +1,6 @@
-/* ============================================
+/* ============================================================
    БАЗА
-   ============================================ */
+   ============================================================ */
 * {
   margin: 0;
   padding: 0;
@@ -12,18 +12,26 @@ html, body {
   overflow-x: hidden;
 }
 
+
+
+
+
 body {
-  font-family: Georgia, serif;
-  background: #050000;
-  background: linear-gradient(90deg, #050000 0%, #3d0c0c 50%, #003a4a 100%);
-  padding: 8px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background-attachment: fixed;   /* фон не скроллится */
+  background: 
+  radial-gradient(circle at 20% 30%, rgba(120, 20, 20, 0.4) 0%, transparent 40%),
+  radial-gradient(circle at 80% 70%, rgba(80, 10, 10, 0.3) 0%, transparent 40%),
+  #050000;
 }
+
+
 
 /* ============================================================
    HEADER
    ============================================================ */
 .header {
-  padding: clamp(8px, 1.5vw, 20px);
+ padding: clamp(8px, 1.5vw, 20px);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -33,9 +41,76 @@ body {
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.25);
   margin-bottom: 12px;
+
+  /* ⚠️ Кнопки слева, прогресс справа */
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: 140px;
+}
+
+.progress-bar {
+  position: relative;
+  width: clamp(80px, 12vw, 180px);
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #c9a96e, #e5d4b0);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(201, 169, 110, 0.6);
+}
+
+.progress-text {
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  color: #e5d4b0;
+  font-family: Georgia, serif;
+  min-width: 36px;
+  text-align: right;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Мобильные */
+@media (max-width: 768px) {
+  .header {
+    gap: 8px;
+    padding: 6px 8px;
+  }
+
+  /* Уменьшаем карусель — 3 кнопки вместо 5 */
+  .button-carousel {
+    width: calc(3 * clamp(36px, 5vw, 48px) + 3 * clamp(6px, 1.5vw, 12px));
+  }
+
+  .progress-wrap {
+    min-width: 80px;
+    gap: 6px;
+  }
+
+  .progress-bar {
+    width: 60px;
+    height: 6px;
+  }
+
+  .progress-text {
+    font-size: 0.7rem;
+    min-width: 28px;
+  }
 }
 
 /* ============================================================
@@ -45,28 +120,74 @@ body {
   overflow: hidden;
   position: relative;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;   /* ← влево */
 
-    width: calc(5 * clamp(36px, 5vw, 48px) + 5 * clamp(6px, 1.5vw, 12px));
+  width: calc(5 * clamp(36px, 5vw, 48px) + 5 * clamp(6px, 1.5vw, 12px));
   max-width: 100%;
-  margin: 0 auto;
+  margin: 0;
   border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  
-  padding: 5px;
+
+  padding: 10px;
   background-color: black;
+  animation: 1.5s borderSpin infinite;
+  flex-shrink: 0;                /* ← не сжимается */
 }
+
+.button-carousel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  padding: 3px;
+
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    transparent 0deg,
+    transparent 300deg,
+    rgba(201, 169, 110, 0.2) 315deg,
+    rgba(201, 169, 110, 0.6) 340deg,
+    #e5d4b0 355deg,
+    #fff 360deg
+  );
+
+  /* ⚠️ КЛЮЧЕВОЕ: mask с двумя слоями */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  /* ⚠️ И только ПОТОМ composite */
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+  z-index: 2;
+  animation: borderSpin 4s linear infinite;
+}
+
+@keyframes borderSpin {
+  to { --angle: 360deg; }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .button-mask{
 mask-image: linear-gradient(
     to left,
     transparent 0,
-    black 40%,
+    black 50%,
     black 100%
   );
   -webkit-mask-image: linear-gradient(
     to left,
     transparent 0,
-    black 40%,
+    black 50%,
     black 100%
   );
    overflow: hidden;
@@ -145,13 +266,14 @@ mask-image: linear-gradient(
   min-height: 71.1vh;
   height: auto;
   border-radius: 32px;
-  box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
+box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
   overflow: hidden;
   padding: 0;
   background-color: #0d0d12;
   animation: fadeIn 0.4s ease both;
-  border: 1px solid rgba(255, 255, 255, 0.25);
 }
+
+
 
 /* Картинка сверху — участвует в потоке, задаёт высоту */
 .content-section::before {
@@ -263,7 +385,7 @@ mask-image: linear-gradient(
 }
 
 .fade-in {
-  animation: fadeIn 0.4s ease both;
+  animation: slideFromRight 0.4s ease both;
 }
 
 @keyframes fadeIn {
@@ -461,5 +583,18 @@ html.no-scroll,
 body.no-scroll {
   overflow: hidden;
   height: 100%;
+}
+
+
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #c9a96e, #e5d4b0);
+  width: 0%;
+  z-index: 9999;
+  transition: width 0.1s ease;
 }
 
