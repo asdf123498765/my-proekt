@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Онлайн библиотека</title>
+    <title>Онлайн книга</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
     <!-- КНОПКИ -->
 <header class="header">
+  <!-- Слева — карусель кнопок -->
   <div class="button-carousel">
     <div class="button-mask">
-        <div class="button-track" id="buttonTrack">
-      <button class="nav-btn" data-target="section-1">1</button>
-      <button class="nav-btn" data-target="section-2">2</button>
-      <button class="nav-btn" data-target="section-3">3</button>
-      <button class="nav-btn" data-target="section-4">4</button>
-      <button class="nav-btn" data-target="section-5">5</button>
-      <button class="nav-btn" data-target="section-6">6</button>
-      <button class="nav-btn" data-target="section-7">7</button>
-      <button class="nav-btn" data-target="section-8">8</button>
-      <button class="nav-btn" data-target="section-9">9</button>
-      <button class="nav-btn" data-target="section-10">10</button>
-      <button class="nav-btn" data-target="section-11">11</button>
-      <button class="nav-btn" data-target="section-12">12</button>
-      <button class="nav-btn" data-target="section-13">13</button>
-      <button class="nav-btn" data-target="section-14">14</button>
-      <button class="nav-btn" data-target="section-15">15</button>
-      <button class="nav-btn" data-target="section-16">16</button>
-      <button class="nav-btn" data-target="section-17">17</button>
-      <button class="nav-btn" data-target="section-18">18</button>
+      <div class="button-track" id="buttonTrack">
+        <button class="nav-btn" data-target="section-1">1</button>
+        <button class="nav-btn" data-target="section-2">2</button>
+        <button class="nav-btn" data-target="section-3">3</button>
+        <button class="nav-btn" data-target="section-4">4</button>
+        <button class="nav-btn" data-target="section-5">5</button>
+        <button class="nav-btn" data-target="section-6">6</button>
+        <button class="nav-btn" data-target="section-7">7</button>
+        <button class="nav-btn" data-target="section-8">8</button>
+        <button class="nav-btn" data-target="section-9">9</button>
+        <button class="nav-btn" data-target="section-10">10</button>
+        <button class="nav-btn" data-target="section-11">11</button>
+        <button class="nav-btn" data-target="section-12">12</button>
+        <button class="nav-btn" data-target="section-13">13</button>
+        <button class="nav-btn" data-target="section-14">14</button>
+        <button class="nav-btn" data-target="section-15">15</button>
+        <button class="nav-btn" data-target="section-16">16</button>
+        <button class="nav-btn" data-target="section-17">17</button>
+        <button class="nav-btn" data-target="section-18">18</button>
+      </div>
     </div>
+  </div>
+
+
+  <!-- Справа — прогресс чтения -->
+  <div class="progress-wrap">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
     </div>
-    
+    <span class="progress-text" id="progressText">0%</span>
   </div>
 </header>
 
@@ -230,7 +239,7 @@
 </div>
     </section>
     <section id="section-14" class=" content-section theme-14 hidden">
-<div class="section-text">
+<div class="section-text ">
     Доев всю еду мы я отправился за ней, она всё время что то смотрела и распрашивала цену, грамотно торгавалась и покупала то что ей нужно, она была похожа на человека который может себе позволить что угодно, она мне кажется доброй. Купив всё то что ей было нужно я был загружен всеми пакетами и мы отправились к ней домой, Пока мы шли
 она всё время расспрашивала меня о всём что только придёт ей в голову.. Какую еду я люблю, как я оказался в их
 деревне, нравится ли мне то чем я занимаюсь. Спустя некоторое время мы дошли до её дома,<br> это было невероятно с 
@@ -326,7 +335,12 @@
 </div>
     </section>
     
-  
+  <section class="bac">
+<div class="chapter-nav">
+  <button class="nav-arrow" id="prevChapter">← Предыдущая</button>
+  <button class="nav-arrow" id="nextChapter">Следующая →</button>
+</div>
+  </section>
 
 </main>
   <section class="welcom">
