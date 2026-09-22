@@ -1,21 +1,5 @@
 /* ============================================
-   1. ОБЁРТКА SECTION-FRAME — ПЕРВЫМ ДЕЛОМ
-   ============================================ */
-(function() {
-  document.querySelectorAll('.content-section').forEach(sec => {
-    if (sec.parentElement.classList.contains('section-frame')) return;
-
-    const frame = document.createElement('div');
-    frame.className = 'section-frame';
-
-    sec.parentNode.insertBefore(frame, sec);
-    frame.appendChild(sec);
-  });
-})();
-
-
-/* ============================================
-   2. НАВИГАЦИЯ — карусель + прогресс
+   НАВИГАЦИЯ — карусель + прогресс + глава
    ============================================ */
 (function() {
   const track = document.getElementById('buttonTrack');
@@ -43,23 +27,13 @@
 
   // ===== Показать секцию =====
   function showSection(num, direction) {
-    // Скрываем все frame
-    document.querySelectorAll('.section-frame').forEach(frame => {
-      frame.classList.add('hidden');
-      frame.classList.remove('fade-in', 'next', 'prev');
+    sections.forEach(s => {
+      s.classList.add('hidden');
+      s.classList.remove('fade-in', 'next', 'prev');
     });
 
-    // Показываем нужный frame
     const target = document.getElementById(`section-${num}`);
-    if (!target) return;
-
-    const frame = target.closest('.section-frame');
-    if (frame) {
-      frame.classList.remove('hidden');
-      frame.classList.add('fade-in');
-      if (direction) frame.classList.add(direction);
-    } else {
-      // Fallback — если frame нет, показываем саму секцию
+    if (target) {
       target.classList.remove('hidden');
       target.classList.add('fade-in');
       if (direction) target.classList.add(direction);
@@ -163,7 +137,7 @@
 
 
 /* ============================================
-   3. МОДАЛЬНОЕ ОКНО ПРИ ВХОДЕ
+   МОДАЛЬНОЕ ОКНО ПРИ ВХОДЕ
    ============================================ */
 (function() {
   const overlay = document.getElementById('welcomeOverlay');
