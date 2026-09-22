@@ -7,6 +7,7 @@
 
     const frame = document.createElement('div');
     frame.className = 'section-frame';
+
     sec.parentNode.insertBefore(frame, sec);
     frame.appendChild(sec);
   });
@@ -14,10 +15,9 @@
 
 
 /* ============================================
-   2. НАВИГАЦИЯ
+   2. НАВИГАЦИЯ — карусель + прогресс
    ============================================ */
 (function() {
-   sections.forEach(s => s.classList.remove('hidden'));
   const track = document.getElementById('buttonTrack');
   if (!track) return;
 
@@ -26,6 +26,7 @@
   const carousel = track.parentElement;
   const TOTAL = buttons.length;
 
+  // ===== Восстановление номера главы =====
   let currentChapter = 1;
   try {
     const saved = localStorage.getItem('lastChapter');
@@ -40,24 +41,32 @@
   const progressFill = document.getElementById('progressFill');
   const progressText = document.getElementById('progressText');
 
-  // ===== Показать секцию — ТОЛЬКО frame =====
-  function showSection(num) {
-    // ⚠️ Работаем ТОЛЬКО с frame. Секции НЕ трогаем!
+  // ===== Показать секцию =====
+  function showSection(num, direction) {
+    // Скрываем все frame
     document.querySelectorAll('.section-frame').forEach(frame => {
       frame.classList.add('hidden');
       frame.classList.remove('fade-in', 'next', 'prev');
     });
 
+    // Показываем нужный frame
     const target = document.getElementById(`section-${num}`);
     if (!target) return;
 
     const frame = target.closest('.section-frame');
     if (frame) {
       frame.classList.remove('hidden');
-      frame.classList.add('fade-in', 'next');
+      frame.classList.add('fade-in');
+      if (direction) frame.classList.add(direction);
+    } else {
+      // Fallback — если frame нет, показываем саму секцию
+      target.classList.remove('hidden');
+      target.classList.add('fade-in');
+      if (direction) target.classList.add(direction);
     }
   }
 
+  // ===== Сдвинуть трек =====
   function centerActiveButton() {
     const active = track.querySelector('.nav-btn.active');
     if (!active) return;
@@ -70,6 +79,7 @@
     track.style.transform = `translateX(${-offset}px)`;
   }
 
+  // ===== Прогресс =====
   let progressAnimId = null;
 
   function animateProgress(toPercent, duration = 400) {
@@ -99,15 +109,17 @@
     animateProgress(percent, 400);
   }
 
+  // ===== Переключение =====
   function goToChapter(num) {
     if (num < 1 || num > TOTAL) return;
 
+    const direction = num > currentChapter ? 'next' : 'prev';
     currentChapter = num;
 
     buttons.forEach(b => b.classList.remove('active'));
     buttons[num - 1].classList.add('active');
 
-    showSection(num);
+    showSection(num, direction);
     centerActiveButton();
     updateProgress();
 
@@ -120,15 +132,18 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // ===== Клик =====
   buttons.forEach((btn, i) => {
     btn.addEventListener('click', () => goToChapter(i + 1));
   });
 
+  // ===== Клавиатура =====
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft')  goToChapter(currentChapter - 1);
     if (e.key === 'ArrowRight') goToChapter(currentChapter + 1);
   });
 
+  // ===== Ресайз =====
   window.addEventListener('resize', centerActiveButton);
   window.addEventListener('orientationchange', () => {
     setTimeout(centerActiveButton, 100);
@@ -136,7 +151,7 @@
 
   // ===== Старт =====
   buttons[currentChapter - 1].classList.add('active');
-  showSection(currentChapter);
+  showSection(currentChapter, 'next');
   updateProgress();
 
   requestAnimationFrame(() => {
@@ -144,4 +159,66 @@
   });
 
   window.addEventListener('load', centerActiveButton);
+})();
+
+
+/* ============================================
+   3. МОДАЛЬНОЕ ОКНО ПРИ ВХОДЕ
+   ============================================ */
+(function() {
+  const overlay = document.getElementById('welcomeOverlay');
+  const closeBtn = document.getElementById('welcomeClose');
+
+  if (!overlay || !closeBtn) {
+    console.warn('Модальное окно не найдено');
+    return;
+  }
+
+  if (sessionStorage.getItem('welcomeClosed') === '1') {
+    overlay.remove();
+    return;
+  }
+
+  function lockScroll() {
+    document.documentElement.classList.add('no-scroll');
+    document.body.classList.add('no-scroll');
+  }
+
+  function unlockScroll() {
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll');
+  }
+
+  lockScroll();
+
+  let closed = false;
+
+  function closeWelcome() {
+    if (closed) return;
+    closed = true;
+
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+
+    unlockScroll();
+
+    sessionStorage.setItem('welcomeClosed', '1');
+    setTimeout(() => overlay.remove(), 300);
+  }
+
+  closeBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    closeWelcome();
+  });
+
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeWelcome();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.body.contains(overlay)) {
+      closeWelcome();
+    }
+  });
 })();
