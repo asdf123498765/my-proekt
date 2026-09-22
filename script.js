@@ -1,6 +1,9 @@
 /* ============================================
    1. ОБЁРТКА SECTION-FRAME — ПЕРВЫМ ДЕЛОМ
    ============================================ */
+/* ============================================
+   1. ОБЁРТКА SECTION-FRAME — ПЕРВЫМ ДЕЛОМ
+   ============================================ */
 (function() {
   document.querySelectorAll('.content-section').forEach(sec => {
     if (sec.parentElement.classList.contains('section-frame')) return;
@@ -41,8 +44,8 @@
   const progressFill = document.getElementById('progressFill');
   const progressText = document.getElementById('progressText');
 
-  // ===== Показать секцию =====
-  function showSection(num, direction) {
+  // ===== Показать секцию — ВСЕГДА next =====
+  function showSection(num) {
     // Скрываем все frame
     document.querySelectorAll('.section-frame').forEach(frame => {
       frame.classList.add('hidden');
@@ -56,13 +59,10 @@
     const frame = target.closest('.section-frame');
     if (frame) {
       frame.classList.remove('hidden');
-      frame.classList.add('fade-in');
-      if (direction) frame.classList.add(direction);
+      frame.classList.add('fade-in', 'next');
     } else {
-      // Fallback — если frame нет, показываем саму секцию
       target.classList.remove('hidden');
-      target.classList.add('fade-in');
-      if (direction) target.classList.add(direction);
+      target.classList.add('fade-in', 'next');
     }
   }
 
@@ -113,13 +113,12 @@
   function goToChapter(num) {
     if (num < 1 || num > TOTAL) return;
 
-    const direction = num > currentChapter ? 'next' : 'prev';
     currentChapter = num;
 
     buttons.forEach(b => b.classList.remove('active'));
     buttons[num - 1].classList.add('active');
 
-    showSection(num, direction);
+    showSection(num);          // ← без direction, всегда next
     centerActiveButton();
     updateProgress();
 
@@ -151,7 +150,7 @@
 
   // ===== Старт =====
   buttons[currentChapter - 1].classList.add('active');
-  showSection(currentChapter, 'next');
+  showSection(currentChapter);
   updateProgress();
 
   requestAnimationFrame(() => {
@@ -223,6 +222,10 @@
   });
 })();
 
+
+/* ============================================
+   4. ГЛОБАЛЬНАЯ АНИМАЦИЯ РАМКИ
+   ============================================ */
 (function() {
   const SPEED = 360 / 5000;
   let angle = 0;
@@ -241,6 +244,10 @@
   requestAnimationFrame(tick);
 })();
 
+
+/* ============================================
+   5. ЗАГРУЗКА КАРТИНОК
+   ============================================ */
 (function() {
   // 1. Добавляем loader в каждую секцию
   document.querySelectorAll('.content-section').forEach(sec => {
@@ -261,14 +268,12 @@
   document.querySelectorAll('.content-section').forEach(sec => {
     const bg = getComputedStyle(sec).getPropertyValue('--bg').trim();
 
-    // Нет картинки — сразу скрываем loader
     if (!bg || bg === 'none') {
       const loader = sec.querySelector('.img-loader');
       if (loader) loader.classList.add('hidden-loader');
       return;
     }
 
-    // Извлекаем URL из "url(img/1.png)"
     const match = bg.match(/url\(["']?([^"')]+)["']?\)/);
     if (!match) return;
 
