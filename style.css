@@ -1,3 +1,6 @@
+/* ============================================================
+   БАЗА
+   ============================================================ */
 * {
   margin: 0;
   padding: 0;
@@ -658,66 +661,4 @@ body.no-scroll {
   /* ❌ animation: borderSpinSection — УБРАТЬ */
 }
 
-.img-loader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  aspect-ratio: 1400 / 800;        /* та же пропорция, что у картинки */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  background: #0d0d12;
-  z-index: 3;
-  opacity: 1;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  border-radius: 32px 32px 0 0;
-}
 
-.img-loader.hidden-loader {
-  opacity: 0;
-}
-
-/* Три точки */
-.loader-dots {
-  display: flex;
-  gap: 12px;
-}
-
-.loader-dots span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #c9a96e;
-  box-shadow: 0 0 8px rgba(201, 169, 110, 0.6);
-  animation: dotBlink 1.4s ease-in-out infinite;
-}
-
-.loader-dots span:nth-child(1) { animation-delay: 0s; }
-.loader-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loader-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes dotBlink {
-  0%, 100% {
-    opacity: 0.2;
-    transform: scale(0.7);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Текст */
-.loader-text {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: #e5d4b0;
-  opacity: 0.7;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-}
