@@ -1,16 +1,12 @@
 /* ============================================
    1. ОБЁРТКА SECTION-FRAME — ПЕРВЫМ ДЕЛОМ
    ============================================ */
-/* ============================================
-   1. ОБЁРТКА SECTION-FRAME — ПЕРВЫМ ДЕЛОМ
-   ============================================ */
 (function() {
   document.querySelectorAll('.content-section').forEach(sec => {
     if (sec.parentElement.classList.contains('section-frame')) return;
 
     const frame = document.createElement('div');
     frame.className = 'section-frame';
-
     sec.parentNode.insertBefore(frame, sec);
     frame.appendChild(sec);
   });
@@ -18,9 +14,10 @@
 
 
 /* ============================================
-   2. НАВИГАЦИЯ — карусель + прогресс
+   2. НАВИГАЦИЯ
    ============================================ */
 (function() {
+   sections.forEach(s => s.classList.remove('hidden'));
   const track = document.getElementById('buttonTrack');
   if (!track) return;
 
@@ -29,7 +26,6 @@
   const carousel = track.parentElement;
   const TOTAL = buttons.length;
 
-  // ===== Восстановление номера главы =====
   let currentChapter = 1;
   try {
     const saved = localStorage.getItem('lastChapter');
@@ -44,15 +40,14 @@
   const progressFill = document.getElementById('progressFill');
   const progressText = document.getElementById('progressText');
 
-  // ===== Показать секцию — ВСЕГДА next =====
+  // ===== Показать секцию — ТОЛЬКО frame =====
   function showSection(num) {
-    // Скрываем все frame
+    // ⚠️ Работаем ТОЛЬКО с frame. Секции НЕ трогаем!
     document.querySelectorAll('.section-frame').forEach(frame => {
       frame.classList.add('hidden');
       frame.classList.remove('fade-in', 'next', 'prev');
     });
 
-    // Показываем нужный frame
     const target = document.getElementById(`section-${num}`);
     if (!target) return;
 
@@ -60,13 +55,9 @@
     if (frame) {
       frame.classList.remove('hidden');
       frame.classList.add('fade-in', 'next');
-    } else {
-      target.classList.remove('hidden');
-      target.classList.add('fade-in', 'next');
     }
   }
 
-  // ===== Сдвинуть трек =====
   function centerActiveButton() {
     const active = track.querySelector('.nav-btn.active');
     if (!active) return;
@@ -79,7 +70,6 @@
     track.style.transform = `translateX(${-offset}px)`;
   }
 
-  // ===== Прогресс =====
   let progressAnimId = null;
 
   function animateProgress(toPercent, duration = 400) {
@@ -109,7 +99,6 @@
     animateProgress(percent, 400);
   }
 
-  // ===== Переключение =====
   function goToChapter(num) {
     if (num < 1 || num > TOTAL) return;
 
@@ -118,7 +107,7 @@
     buttons.forEach(b => b.classList.remove('active'));
     buttons[num - 1].classList.add('active');
 
-    showSection(num);          // ← без direction, всегда next
+    showSection(num);
     centerActiveButton();
     updateProgress();
 
@@ -131,18 +120,15 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // ===== Клик =====
   buttons.forEach((btn, i) => {
     btn.addEventListener('click', () => goToChapter(i + 1));
   });
 
-  // ===== Клавиатура =====
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft')  goToChapter(currentChapter - 1);
     if (e.key === 'ArrowRight') goToChapter(currentChapter + 1);
   });
 
-  // ===== Ресайз =====
   window.addEventListener('resize', centerActiveButton);
   window.addEventListener('orientationchange', () => {
     setTimeout(centerActiveButton, 100);
@@ -158,141 +144,4 @@
   });
 
   window.addEventListener('load', centerActiveButton);
-})();
-
-
-/* ============================================
-   3. МОДАЛЬНОЕ ОКНО ПРИ ВХОДЕ
-   ============================================ */
-(function() {
-  const overlay = document.getElementById('welcomeOverlay');
-  const closeBtn = document.getElementById('welcomeClose');
-
-  if (!overlay || !closeBtn) {
-    console.warn('Модальное окно не найдено');
-    return;
-  }
-
-  if (sessionStorage.getItem('welcomeClosed') === '1') {
-    overlay.remove();
-    return;
-  }
-
-  function lockScroll() {
-    document.documentElement.classList.add('no-scroll');
-    document.body.classList.add('no-scroll');
-  }
-
-  function unlockScroll() {
-    document.documentElement.classList.remove('no-scroll');
-    document.body.classList.remove('no-scroll');
-  }
-
-  lockScroll();
-
-  let closed = false;
-
-  function closeWelcome() {
-    if (closed) return;
-    closed = true;
-
-    overlay.style.opacity = '0';
-    overlay.style.pointerEvents = 'none';
-
-    unlockScroll();
-
-    sessionStorage.setItem('welcomeClosed', '1');
-    setTimeout(() => overlay.remove(), 300);
-  }
-
-  closeBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    closeWelcome();
-  });
-
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) closeWelcome();
-  });
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && document.body.contains(overlay)) {
-      closeWelcome();
-    }
-  });
-})();
-
-
-/* ============================================
-   4. ГЛОБАЛЬНАЯ АНИМАЦИЯ РАМКИ
-   ============================================ */
-(function() {
-  const SPEED = 360 / 5000;
-  let angle = 0;
-  let lastTime = performance.now();
-
-  function tick(now) {
-    const dt = now - lastTime;
-    lastTime = now;
-
-    angle = (angle + SPEED * dt) % 360;
-    document.documentElement.style.setProperty('--angle-global', angle + 'deg');
-
-    requestAnimationFrame(tick);
-  }
-
-  requestAnimationFrame(tick);
-})();
-
-
-/* ============================================
-   5. ЗАГРУЗКА КАРТИНОК
-   ============================================ */
-(function() {
-  // 1. Добавляем loader в каждую секцию
-  document.querySelectorAll('.content-section').forEach(sec => {
-    if (sec.querySelector('.img-loader')) return;
-
-    const loader = document.createElement('div');
-    loader.className = 'img-loader';
-    loader.innerHTML = `
-      <div class="loader-dots">
-        <span></span><span></span><span></span>
-      </div>
-      <div class="loader-text">Загружаем</div>
-    `;
-    sec.insertBefore(loader, sec.firstChild);
-  });
-
-  // 2. Отслеживаем загрузку картинок
-  document.querySelectorAll('.content-section').forEach(sec => {
-    const bg = getComputedStyle(sec).getPropertyValue('--bg').trim();
-
-    if (!bg || bg === 'none') {
-      const loader = sec.querySelector('.img-loader');
-      if (loader) loader.classList.add('hidden-loader');
-      return;
-    }
-
-    const match = bg.match(/url\(["']?([^"')]+)["']?\)/);
-    if (!match) return;
-
-    const url = match[1];
-    const img = new Image();
-
-    img.onload = () => {
-      const loader = sec.querySelector('.img-loader');
-      if (loader) {
-        loader.classList.add('hidden-loader');
-        setTimeout(() => loader.remove(), 400);
-      }
-    };
-
-    img.onerror = () => {
-      const loader = sec.querySelector('.img-loader');
-      if (loader) loader.classList.add('hidden-loader');
-    };
-
-    img.src = url;
-  });
 })();
