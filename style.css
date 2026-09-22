@@ -12,26 +12,20 @@ html, body {
   overflow-x: hidden;
 }
 
-
-
-
-
 body {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  background-attachment: fixed;   /* фон не скроллится */
+  background-attachment: fixed;
   background: 
-  radial-gradient(circle at 20% 30%, rgba(120, 20, 20, 0.4) 0%, transparent 40%),
-  radial-gradient(circle at 80% 70%, rgba(80, 10, 10, 0.3) 0%, transparent 40%),
-  #050000;
+    radial-gradient(circle at 20% 30%, rgba(120, 20, 20, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(80, 10, 10, 0.3) 0%, transparent 40%),
+    #050000;
 }
-
-
 
 /* ============================================================
    HEADER
    ============================================================ */
 .header {
- padding: clamp(8px, 1.5vw, 20px);
+  padding: clamp(8px, 1.5vw, 20px);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -42,7 +36,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.25);
   margin-bottom: 12px;
 
-  /* ⚠️ Кнопки слева, прогресс справа */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -85,42 +78,14 @@ body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-/* Мобильные */
-@media (max-width: 768px) {
-  .header {
-    gap: 8px;
-    padding: 6px 8px;
-  }
-
-  /* Уменьшаем карусель — 3 кнопки вместо 5 */
-  .button-carousel {
-    width: calc(3 * clamp(36px, 5vw, 48px) + 3 * clamp(6px, 1.5vw, 12px));
-  }
-
-  .progress-wrap {
-    min-width: 80px;
-    gap: 6px;
-  }
-
-  .progress-bar {
-    width: 60px;
-    height: 6px;
-  }
-
-  .progress-text {
-    font-size: 0.7rem;
-    min-width: 28px;
-  }
-}
-
 /* ============================================================
-   КАРУСЕЛЬ — все кнопки в DOM, активная в центре
+   КАРУСЕЛЬ
    ============================================================ */
 .button-carousel {
   overflow: hidden;
   position: relative;
   display: flex;
-  justify-content: flex-start;   /* ← влево */
+  justify-content: flex-start;
 
   width: calc(5 * clamp(36px, 5vw, 48px) + 5 * clamp(6px, 1.5vw, 12px));
   max-width: 100%;
@@ -129,56 +94,7 @@ body {
 
   padding: 10px;
   background-color: black;
-  animation: 1.5s borderSpin infinite;
-  flex-shrink: 0;                /* ← не сжимается */
-}
-
-.section-frame {
-  position: relative;
-  border-radius: 32px;
-  flex: 0 0 auto;
-
-}
-
-.section-frame::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 32px;
-  padding: 3px;
-
-  background: conic-gradient(
-    from var(--angle-section, 0deg),
-    transparent 0deg,
-    transparent 300deg,
-    rgba(201, 169, 110, 0.2) 315deg,
-    rgba(201, 169, 110, 0.6) 340deg,
-    #e5d4b0 355deg,
-    #fff 360deg
-  );
-
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-
-  pointer-events: none;
-  z-index: 3;
-  animation: borderSpinSection 5s linear infinite;
-}
-
-@property --angle-section {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes borderSpinSection {
-  to { --angle-section: 360deg; }
+  flex-shrink: 0;
 }
 
 .button-carousel::before {
@@ -198,15 +114,12 @@ body {
     #fff 360deg
   );
 
-  /* ⚠️ КЛЮЧЕВОЕ: mask с двумя слоями */
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
-
-  /* ⚠️ И только ПОТОМ composite */
   -webkit-mask-composite: xor;
   mask-composite: exclude;
 
@@ -225,8 +138,8 @@ body {
   inherits: false;
 }
 
-.button-mask{
-mask-image: linear-gradient(
+.button-mask {
+  mask-image: linear-gradient(
     to left,
     transparent 0,
     black 50%,
@@ -238,14 +151,15 @@ mask-image: linear-gradient(
     black 50%,
     black 100%
   );
-   overflow: hidden;
+  overflow: hidden;
   width: 100%;
 }
+
 .button-track {
   display: flex;
   gap: clamp(6px, 1.5vw, 12px);
   padding: 0 calc(50% - 24px);
-  transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) ; 
+  transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
   will-change: transform;
 }
 
@@ -267,12 +181,7 @@ mask-image: linear-gradient(
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   scale: 0.8;
 
-  transition:
-    background 0.35s ease,
-    border-color 0.35s ease,
-    box-shadow 0.35s ease,
-    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transition: 0.25s;
+  transition: 0.25s;
 }
 
 .nav-btn:hover {
@@ -305,7 +214,7 @@ mask-image: linear-gradient(
 }
 
 /* ============================================================
-   СЕКЦИЯ — картинка сверху, текст снизу
+   СЕКЦИЯ
    ============================================================ */
 .content-section {
   position: relative;
@@ -314,15 +223,12 @@ mask-image: linear-gradient(
   min-height: 71.1vh;
   height: auto;
   border-radius: 32px;
-box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
+  box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
   overflow: hidden;
   padding: 0;
   background-color: #0d0d12;
 }
 
-
-
-/* Картинка сверху — участвует в потоке, задаёт высоту */
 .content-section::before {
   content: '';
   display: block;
@@ -333,11 +239,8 @@ box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
   background-position: center;
   background-repeat: no-repeat;
   background-color: #0d0d12;
-  position: relative;
-  z-index: 1;
 }
 
-/* Затемнение поверх картинки */
 .content-section::after {
   content: '';
   position: absolute;
@@ -354,7 +257,6 @@ box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
   z-index: 1;
 }
 
-/* Текст под картинкой */
 .section-text {
   position: relative;
   z-index: 2;
@@ -369,7 +271,7 @@ box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
 }
 
 /* ============================================================
-   ПРОПОРЦИИ ДЛЯ КАЖДОЙ ТЕМЫ
+   ПРОПОРЦИИ ТЕМ
    ============================================================ */
 .theme-1::before,  .theme-1::after,
 .theme-2::before,  .theme-2::after,
@@ -391,13 +293,11 @@ box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
   aspect-ratio: 1400 / 800;
 }
 
-/* theme-10 — 1400×1370 */
 .theme-10::before,
 .theme-10::after {
   aspect-ratio: 1400 / 800;
 }
 
-/* theme-19 — без картинки */
 .theme-19::before,
 .theme-19::after {
   display: none;
@@ -437,27 +337,14 @@ box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
   animation: slideFromRight 0.4s ease both;
 }
 
-
 @keyframes slideFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(80px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(80px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes slideFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-80px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-80px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 .fade-in.next {
@@ -480,6 +367,26 @@ box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
     padding: 6px;
     border-radius: 20px;
     margin-bottom: 8px;
+    gap: 8px;
+  }
+
+  .button-carousel {
+    width: calc(3 * clamp(36px, 5vw, 48px) + 3 * clamp(6px, 1.5vw, 12px));
+  }
+
+  .progress-wrap {
+    min-width: 80px;
+    gap: 6px;
+  }
+
+  .progress-bar {
+    width: 60px;
+    height: 6px;
+  }
+
+  .progress-text {
+    font-size: 0.7rem;
+    min-width: 28px;
   }
 
   .content-section {
@@ -497,7 +404,7 @@ box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 1);
 }
 
 /* ============================================================
-   ЛАНДШАФТ НА ТЕЛЕФОНЕ
+   ЛАНДШАФТ
    ============================================================ */
 @media (orientation: landscape) and (max-height: 500px) {
   .content-section {
@@ -629,36 +536,6 @@ html.no-scroll,
 body.no-scroll {
   overflow: hidden;
   height: 100%;
-}
-
-
-
-.progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #c9a96e, #e5d4b0);
-  width: 0%;
-  z-index: 9999;
-  transition: width 0.1s ease;
-}
-
-:root {
-  --angle-global: 0deg;
-}
-
-.section-frame::before {
-  background: conic-gradient(
-    from var(--angle-global),      /* ← используем глобальную */
-    transparent 0deg,
-    transparent 300deg,
-    rgba(201, 169, 110, 0.2) 315deg,
-    rgba(201, 169, 110, 0.6) 340deg,
-    #e5d4b0 355deg,
-    #fff 360deg
-  );
-  /* ❌ animation: borderSpinSection — УБРАТЬ */
 }
 
 
